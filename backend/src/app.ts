@@ -9,6 +9,9 @@ const port = 5000;
 //Connect to MongoDB
 connectDB();
 
+// Init middleware
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('App is running');
 });
