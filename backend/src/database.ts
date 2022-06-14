@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import { mongoConfig } from './config/mongoDB';
+import config from './config/config';
 
 export async function connectDB(): Promise<void> {
   try {
-    await mongoose.connect(mongoConfig.url);
+    await mongoose.connect(config.DB.URI);
     console.log('MongoDB Connected...');
   } catch (err) {
-    console.error(err);
+    console.log(err);
     process.exit(1);
   }
 }
