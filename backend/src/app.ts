@@ -1,6 +1,7 @@
 import express from 'express';
 import usersRoutes from './routes/users.routes';
 import authRoutes from './routes/auth.routes';
+import youtubeRoutes from './routes/youtube.routes';
 import cors from 'cors';
 import morgan from 'morgan';
 import passport from 'passport';
@@ -26,5 +27,6 @@ app.get('/', (req, res) => {
 // Declare routes
 app.use(usersRoutes);
 app.use(authRoutes);
+app.use(youtubeRoutes);
 
 export default app;

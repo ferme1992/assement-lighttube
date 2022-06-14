@@ -5,4 +5,5 @@ export default {
     USER: process.env.MONGODB_USER,
     PASSWORD: process.env.MONGODB_PASSWORD,
   },
+  youtubeKey: process.env.YOUTUBE_KEY,
 };
