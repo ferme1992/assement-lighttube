@@ -16,7 +16,14 @@ router.post(
   ],
   signUp
 );
-router.post('/signin', signIn);
+router.post(
+  '/signin',
+  [
+    check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password is required').exists(),
+  ],
+  signIn
+);
 
 // @route   GET api/auth
 // @desc    Test route

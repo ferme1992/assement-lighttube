@@ -7,6 +7,7 @@ export interface IUser {
   email: string;
   password: string;
   createdAt: Date;
+  comparePassword: (password: string) => Promise<boolean>;
 }
 
 const UserSchema = new Schema<IUser>({
