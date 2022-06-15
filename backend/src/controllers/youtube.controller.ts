@@ -29,3 +29,25 @@ export const searchYoutube = async (
     next(err);
   }
 };
+
+// @route   GET /listVideos
+// @desc    Search by title on youtube
+// @access  Private
+export const listVideosYoutube = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const searchQuery = req.query.search_query?.toString();
+    const response = await youtube.search.list({
+      part: ['snippet'],
+      maxResults: 10,
+      q: searchQuery,
+    });
+
+    res.send(response.data.items);
+  } catch (err) {
+    next(err);
+  }
+};
