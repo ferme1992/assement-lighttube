@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config';
 
 function createToken(user: IUser) {
-  return jwt.sign({ id: user._id, email: user.email }, config.jwtSecret, {
+  return jwt.sign({ id: user.id, email: user.email }, config.jwtSecret, {
     expiresIn: 86400,
   });
 }

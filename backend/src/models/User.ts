@@ -2,11 +2,12 @@ import { model, Schema } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   password: string;
   createdAt: Date;
+  favoritedVideos: string[];
   comparePassword: (password: string) => Promise<boolean>;
 }
 
@@ -30,6 +31,11 @@ const UserSchema = new Schema<IUser>({
     type: Date,
     default: Date.now,
   },
+  favoritedVideos: [
+    {
+      type: String,
+    },
+  ],
 });
 
 UserSchema.pre('save', async function (next) {

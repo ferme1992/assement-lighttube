@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signIn, signUp } from '../controllers/user.controller';
+import { signIn, signUp } from '../controllers/auth.controller';
 import { check } from 'express-validator';
 
 const router = Router();
@@ -16,6 +16,7 @@ router.post(
   ],
   signUp
 );
+
 router.post(
   '/signin',
   [
@@ -24,10 +25,5 @@ router.post(
   ],
   signIn
 );
-
-// @route   GET api/auth
-// @desc    Test route
-// @access  Public
-router.get('/', (req, res) => res.send('Testing auth route'));
 
 export default router;

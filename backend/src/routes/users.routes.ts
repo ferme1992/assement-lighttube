@@ -1,12 +1,10 @@
 import express, { Request, Response } from 'express';
+import passport from 'passport';
+import { addFavoriteVideo } from '../controllers/user.favorites.controller';
 
 const router = express.Router();
+const authJwt = passport.authenticate('jwt', { session: false });
 
-// @route   GET api/users/test
-// @desc    Test route
-// @access  Public
-router.get('/test', (req: Request, res: Response) =>
-  res.send('Testing users route')
-);
+router.post('/addFavorite', authJwt, addFavoriteVideo);
 
 export default router;
