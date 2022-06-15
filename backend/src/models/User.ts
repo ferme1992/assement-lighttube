@@ -8,6 +8,7 @@ export interface IUser {
   password: string;
   createdAt: Date;
   favoritedVideos: string[];
+  searchTerms: string[];
   comparePassword: (password: string) => Promise<boolean>;
 }
 
@@ -32,6 +33,11 @@ const UserSchema = new Schema<IUser>({
     default: Date.now,
   },
   favoritedVideos: [
+    {
+      type: String,
+    },
+  ],
+  searchTerms: [
     {
       type: String,
     },

@@ -9,7 +9,7 @@ const youtube = google.youtube({
 });
 
 // @route   GET /search
-// @desc    Search by title on youtube
+// @desc    Search by query on youtube
 // @access  Private
 export const searchYoutube = async (
   req: Request,
