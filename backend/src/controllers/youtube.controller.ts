@@ -19,7 +19,7 @@ export const searchYoutube = async (
   try {
     const searchQuery = req.query.search_query?.toString();
     const response = await youtube.search.list({
-      part: ['snippet'],
+      part: ['id'],
       maxResults: 10,
       q: searchQuery,
     });
@@ -30,20 +30,19 @@ export const searchYoutube = async (
   }
 };
 
-// @route   GET /listVideos
-// @desc    Search by title on youtube
+// @route   GET /listFavoritedVideos
+// @desc    List favorited videos from user
 // @access  Private
-export const listVideosYoutube = async (
+export const listFavoritedVideos = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const searchQuery = req.query.search_query?.toString();
-    const response = await youtube.search.list({
+    const idsToList = req.body.favoritedVideos;
+    const response = await youtube.videos.list({
       part: ['snippet'],
-      maxResults: 10,
-      q: searchQuery,
+      id: idsToList,
     });
 
     res.send(response.data.items);
