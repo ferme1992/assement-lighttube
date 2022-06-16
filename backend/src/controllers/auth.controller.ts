@@ -41,7 +41,7 @@ export const signUp = async (
 
     await user.save();
 
-    return res.status(201).json(user);
+    return res.status(200).json({ token: createToken(user) });
   } catch (err) {
     console.error(err);
     return res.status(500).send('Server Error');
@@ -57,14 +57,16 @@ export const signIn = async (req: Request, res: Response) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const user = await User.findOne({ email: req.body.email }).exec();
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email }).exec();
   if (!user) {
     return res.status(400).json({
       errors: [{ msg: 'The user does not exists' }],
     });
   }
 
-  const isMatch = await user.comparePassword(req.body.password);
+  const isMatch = await user.comparePassword(password);
   if (isMatch) {
     return res.status(200).json({ token: createToken(user) });
   } else {
