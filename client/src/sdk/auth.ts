@@ -5,7 +5,8 @@ export const signIn = async (email: string, password: string) => {
   const body = { email, password };
 
   try {
-    return await api.post('/signin', body);
+    const response = await api.post('/signin', body);
+    return response.data.token;
   } catch (err) {
     console.log((err as AxiosError).response?.data);
   }
@@ -15,7 +16,8 @@ export const signUp = async (name: string, email: string, password: string) => {
   const body = { name, email, password };
 
   try {
-    return await api.post('/signUp', body);
+    const response = await api.post('/signUp', body);
+    return response.data.token;
   } catch (err) {
     console.log((err as AxiosError).response?.data);
   }
