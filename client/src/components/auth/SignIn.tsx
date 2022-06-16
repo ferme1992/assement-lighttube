@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import {
   Container,
   Box,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff, AccountCircle } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { signUp } from '../../sdk/auth';
+import useAuth from '../../context/AuthContext';
 
 interface State {
   password: string;
@@ -21,6 +21,18 @@ interface State {
 }
 
 const SignIn = () => {
+  const { storeToken } = useAuth();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    storeToken(
+      formData.get('email') as string,
+      formData.get('password') as string
+    );
+  }
+
   const [values, setValues] = React.useState<State>({
     password: '',
     showPassword: false,
@@ -59,16 +71,24 @@ const SignIn = () => {
           </Typography>
         </Stack>
       </Box>
-      <Box component='form'>
+      <Box component='form' onSubmit={handleSubmit}>
         <Box>
-          <TextField required id='email-input' label='Email' margin='normal' />
+          <TextField
+            required
+            id='email-input'
+            label='Email'
+            margin='normal'
+            name='email'
+          />
           <InputLabel htmlFor='outlined-adornment-password'>
             Password
           </InputLabel>
           <OutlinedInput
+            required
             id='outlined-adornment-password'
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
+            name='password'
             onChange={handleChange('password')}
             endAdornment={
               <InputAdornment position='end'>
@@ -86,6 +106,7 @@ const SignIn = () => {
           />
         </Box>
         <Button
+          type='submit'
           variant='contained'
           aria-label='sign in button'
           sx={{ my: '1.5rem' }}
