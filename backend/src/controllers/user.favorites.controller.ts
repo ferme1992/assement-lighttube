@@ -6,7 +6,7 @@ import { User } from '../models/User';
 // @access  Private
 export const addFavoriteVideo = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.body.id).exec();
+    const user = await User.findOne(req.user).exec();
 
     if (!user) {
       return res.status(400).json({
@@ -37,7 +37,7 @@ export const addFavoriteVideo = async (req: Request, res: Response) => {
 // @access  Private
 export const removeFavoriteVideo = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.body.id).exec();
+    const user = await User.findOne(req.user).exec();
 
     if (!user) {
       return res.status(400).json({
@@ -55,8 +55,8 @@ export const removeFavoriteVideo = async (req: Request, res: Response) => {
       return res.status(400).send('User has not favorited this video');
     }
 
-    const removeIndex = user.favoritedVideos.findIndex(() => {
-      (id: string) => id === videoId;
+    const removeIndex = user.favoritedVideos.findIndex((id) => {
+      return id === videoId;
     });
     user.favoritedVideos.splice(removeIndex, 1);
 
@@ -74,7 +74,7 @@ export const removeFavoriteVideo = async (req: Request, res: Response) => {
 // @access  Private
 export const getFavoritedVideos = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.body.id).exec();
+    const user = await User.findOne(req.user).exec();
 
     if (!user) {
       return res.status(400).json({
