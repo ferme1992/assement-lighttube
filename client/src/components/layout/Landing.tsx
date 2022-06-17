@@ -11,7 +11,7 @@ const Landing = () => {
             component='h1'
             sx={{ fontSize: '4rem', lineHeight: 1.2, mb: '1rem' }}
           >
-            Light tube
+            LightTube
           </Box>
           <Box component='h1' sx={{ fontSize: '1.5rem', mb: '1rem' }}>
             Search for videos in a super light app and add them to your
