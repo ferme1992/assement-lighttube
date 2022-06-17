@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Landing from './components/layout/Landing';
 import SignIn from './components/auth/SignIn';
+import SignUp from './components/auth/SignUp';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='/signIn' element={<SignIn />} />
+          <Route path='/signUp' element={<SignUp />} />
         </Routes>
       </Router>
     </AuthProvider>
