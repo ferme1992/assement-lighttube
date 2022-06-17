@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState, useMemo } from 'react';
 import { signIn, signUp } from '../sdk/auth';
 
 interface AuthContextType {
-  token?: string;
+  token?: string | null;
   loggedIn: boolean;
   storeToken: (email: string, password: string) => void;
   signUpUser: (name: string, email: string, password: string) => void;
@@ -16,14 +16,17 @@ export function AuthProvider({
 }: {
   children: ReactNode;
 }): JSX.Element {
-  const [token, setToken] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem('token') ? true : false
+  );
 
   async function storeToken(email: string, password: string) {
     const currentToken = await signIn(email, password);
     if (currentToken) {
       setToken(currentToken);
       setLoggedIn(true);
+      localStorage.setItem('token', currentToken);
     }
   }
 
@@ -32,12 +35,14 @@ export function AuthProvider({
     if (currentToken) {
       setToken(currentToken);
       setLoggedIn(true);
+      localStorage.setItem('token', currentToken);
     }
   }
 
   function logout() {
-    setToken(undefined);
+    setToken(null);
     setLoggedIn(false);
+    localStorage.removeItem('token');
   }
 
   const memoedValue = useMemo(
