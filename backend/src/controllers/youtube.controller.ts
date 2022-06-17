@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { google } from 'googleapis';
 import config from '../config/config';
+import { User } from '../models/User';
 
 const apiUrl = 'https://www.googleapis.com/youtube/v3';
 const youtube = google.youtube({
@@ -39,14 +40,28 @@ export const listFavoritedVideos = async (
   next: NextFunction
 ) => {
   try {
-    const idsToList = req.body.favoritedVideos;
+    const user = await User.findOne(req.user).exec();
+
+    if (!user) {
+      return res.status(400).json({
+        errors: [{ msg: 'The user does not exists' }],
+      });
+    }
+
+    const videosIds = user.favoritedVideos;
+
+    if (videosIds.length < 1) {
+      return res.status(200).send('The user has not favorited videos yet');
+    }
+
     const response = await youtube.videos.list({
       part: ['snippet'],
-      id: idsToList,
+      id: videosIds,
     });
 
     res.send(response.data.items);
   } catch (err) {
     next(err);
+    return res.status(500).send('Server Error');
   }
 };
