@@ -68,29 +68,3 @@ export const removeFavoriteVideo = async (req: Request, res: Response) => {
     return res.status(500).send('Server Error');
   }
 };
-
-// @route   GET /favoritedVideos
-// @desc    Get favorited videos from user
-// @access  Private
-export const getFavoritedVideos = async (req: Request, res: Response) => {
-  try {
-    const user = await User.findOne(req.user).exec();
-
-    if (!user) {
-      return res.status(400).json({
-        errors: [{ msg: 'The user does not exists' }],
-      });
-    }
-
-    const videosIds = user.favoritedVideos;
-
-    if (videosIds.length < 1) {
-      return res.status(200).send('The user has not favorited videos yet');
-    }
-
-    res.json(videosIds);
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('Server Error');
-  }
-};

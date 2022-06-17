@@ -3,7 +3,6 @@ import passport from 'passport';
 import {
   addFavoriteVideo,
   removeFavoriteVideo,
-  getFavoritedVideos,
 } from '../controllers/user.favorites.controller';
 import {
   addSearchTerm,
@@ -15,7 +14,6 @@ const authJwt = passport.authenticate('jwt', { session: false });
 
 router.post('/addFavorite', authJwt, addFavoriteVideo);
 router.post('/removeFavorite', authJwt, removeFavoriteVideo);
-router.get('/getFavorites', authJwt, getFavoritedVideos);
 router.post('/addSearchTerm', authJwt, addSearchTerm);
 router.get('/getSearchTerms', authJwt, getSearchTerms);
 

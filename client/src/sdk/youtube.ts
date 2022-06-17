@@ -1,6 +1,5 @@
 import api from '../utils/api';
 import { AxiosError } from 'axios';
-import useAuth from '../context/AuthContext';
 
 export const searchYoutube = async (searchQuery: string, token: string) => {
   try {

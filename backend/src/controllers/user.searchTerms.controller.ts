@@ -6,7 +6,7 @@ import { User } from '../models/User';
 // @access  Private
 export const addSearchTerm = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.body.id).exec();
+    const user = await User.findOne(req.user).exec();
 
     if (!user) {
       return res.status(400).json({
@@ -37,7 +37,7 @@ export const addSearchTerm = async (req: Request, res: Response) => {
 // @access  Private
 export const getSearchTerms = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.body.id).exec();
+    const user = await User.findOne(req.user).exec();
 
     if (!user) {
       return res.status(400).json({
