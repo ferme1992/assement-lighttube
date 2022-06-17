@@ -6,7 +6,6 @@ interface AuthContextType {
   loggedIn: boolean;
   storeToken: (email: string, password: string) => void;
   signUpUser: (name: string, email: string, password: string) => void;
-  isLoggedIn: () => void;
   logout: () => void;
 }
 
@@ -22,23 +21,17 @@ export function AuthProvider({
 
   async function storeToken(email: string, password: string) {
     const currentToken = await signIn(email, password);
-    if (token) {
+    if (currentToken) {
       setToken(currentToken);
+      setLoggedIn(true);
     }
   }
 
   async function signUpUser(name: string, email: string, password: string) {
     const currentToken = await signUp(name, email, password);
-    if (token) {
+    if (currentToken) {
       setToken(currentToken);
-    }
-  }
-
-  function isLoggedIn() {
-    if (token) {
       setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
     }
   }
 
@@ -53,7 +46,6 @@ export function AuthProvider({
       loggedIn,
       storeToken,
       signUpUser,
-      isLoggedIn,
       logout,
     }),
     [token]
