@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Typography, Stack, AppBar } from '@mui/material';
 import {
   Logout,
@@ -6,12 +6,19 @@ import {
   Login,
   AccountCircle,
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../context/AuthContext';
 
 const Navbar = () => {
   const { loggedIn, logout } = useAuth();
-  // TODO Add auth links redirect, redirect logout to landing, add search bar, fav
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate('/');
+    }
+  }, [loggedIn]);
+  // TODO add search bar, fav, style
   const authLinks = (
     <Stack direction='column' spacing={1}>
       <Stack direction='row' spacing={1} onClick={logout}>
