@@ -1,6 +1,4 @@
 import { Router } from 'express';
-import config from '../config/config';
-import { google } from 'googleapis';
 import passport from 'passport';
 import {
   searchYoutube,
