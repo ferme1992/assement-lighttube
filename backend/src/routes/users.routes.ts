@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import { Router } from 'express';
 import passport from 'passport';
 import {
   addFavoriteVideo,
@@ -9,7 +9,7 @@ import {
   getSearchTerms,
 } from '../controllers/user.searchTerms.controller';
 
-const router = express.Router();
+const router = Router();
 const authJwt = passport.authenticate('jwt', { session: false });
 
 router.post('/addFavorite', authJwt, addFavoriteVideo);

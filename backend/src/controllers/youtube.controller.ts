@@ -20,12 +20,12 @@ export const searchYoutube = async (
   try {
     const searchQuery = req.query.search_query?.toString();
     const response = await youtube.search.list({
-      part: ['id'],
+      part: ['snippet'],
       maxResults: 10,
       q: searchQuery,
     });
 
-    res.send(response.data.items);
+    res.send(response.data);
   } catch (err) {
     next(err);
   }
@@ -59,7 +59,7 @@ export const listFavoritedVideos = async (
       id: videosIds,
     });
 
-    res.send(response.data.items);
+    res.send(response.data);
   } catch (err) {
     next(err);
     return res.status(500).send('Server Error');
