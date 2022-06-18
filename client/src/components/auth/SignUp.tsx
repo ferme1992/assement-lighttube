@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useEffect } from 'react';
 import {
   Container,
   Box,
@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Visibility, VisibilityOff, AccountCircle } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../context/AuthContext';
 
 interface State {
@@ -21,7 +21,8 @@ interface State {
 }
 
 const SignUp = () => {
-  const { signUpUser } = useAuth();
+  const { signUpUser, loggedIn } = useAuth();
+  const navigate = useNavigate();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,6 +34,12 @@ const SignUp = () => {
       formData.get('password') as string
     );
   }
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate('/favorites');
+    }
+  }, [signUpUser]);
 
   const [values, setValues] = React.useState<State>({
     password: '',
