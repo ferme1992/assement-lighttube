@@ -14,15 +14,14 @@ const Navbar = () => {
   // TODO Add auth links redirect, redirect logout to landing, add search bar, fav
   const authLinks = (
     <Stack direction='column' spacing={1}>
-      <Stack direction='row' spacing={1}>
-        <Logout onClick={logout} fontSize='small' />
+      <Stack direction='row' spacing={1} onClick={logout}>
+        <Logout fontSize='small' />
         <Typography component='a' sx={{ fontSize: '1rem', mb: '1rem' }}>
           Logout
         </Typography>
       </Stack>
     </Stack>
   );
-  //TODO add redirect to home
   const guestLinks = (
     <Stack direction='column' spacing={1}>
       <Stack direction='row' spacing={1} component={Link} to='/signIn'>
