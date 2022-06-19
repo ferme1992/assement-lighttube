@@ -1,30 +1,45 @@
 import api from '../utils/api';
 import { AxiosError } from 'axios';
 
+interface PageInfo {
+  totalResults: number;
+  resultsPerPage: number;
+}
+
+interface Id {
+  videoId: string;
+}
+
 interface Snippet {
   title: string;
   description: string;
   channelTitle: string;
 }
 
-interface Item {
+interface ListItem {
   id: string;
   snippet: Snippet;
 }
 
-interface PageInfo {
-  totalResults: number;
-  resultsPerPage: number;
+interface SearchItem {
+  id: Id;
+  snippet: Snippet;
 }
 
-export interface YoutubeResponse {
-  items: Item[];
+export interface YoutubeListResponse {
+  items: ListItem[];
   pageInfo: PageInfo;
+}
+
+export interface YoutubeSearchResponse {
+  nextPageToken: string;
+  pageInfo: PageInfo;
+  items: SearchItem[];
 }
 
 export const searchYoutube = async (searchQuery: string, token: string) => {
   try {
-    const response = await api.get<YoutubeResponse>('/search', {
+    const response = await api.get<YoutubeSearchResponse>('/search', {
       params: { search_query: searchQuery },
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -36,9 +51,12 @@ export const searchYoutube = async (searchQuery: string, token: string) => {
 
 export const listFavorites = async (token: string) => {
   try {
-    const response = await api.get<YoutubeResponse>('/listFavoritedVideos', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.get<YoutubeListResponse>(
+      '/listFavoritedVideos',
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data;
   } catch (err) {
     console.log((err as AxiosError).response?.data);

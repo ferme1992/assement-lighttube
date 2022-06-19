@@ -37,9 +37,9 @@ const SignUp = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/favorites');
+      navigate('/home');
     }
-  }, [signUpUser]);
+  }, [loggedIn]);
 
   const [values, setValues] = React.useState<State>({
     password: '',

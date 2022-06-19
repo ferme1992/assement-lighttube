@@ -35,7 +35,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate('/favorites');
+      navigate('/home');
     }
   }, [storeToken]);
 
