@@ -21,7 +21,7 @@ export const searchYoutube = async (
     const searchQuery = req.query.search_query?.toString();
     const response = await youtube.search.list({
       part: ['snippet'],
-      maxResults: 10,
+      maxResults: 12,
       q: searchQuery,
     });
 
@@ -63,5 +63,29 @@ export const listFavoritedVideos = async (
   } catch (err) {
     next(err);
     return res.status(500).send('Server Error');
+  }
+};
+
+// @route   GET /pagination
+// @desc    Get pagination from youtube
+// @access  Private
+export const pagination = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const searchQuery = req.query.search_query?.toString();
+    const pageToken = req.query.page?.toString();
+    const response = await youtube.search.list({
+      part: ['snippet'],
+      maxResults: 12,
+      pageToken: pageToken,
+      q: searchQuery,
+    });
+
+    res.send(response.data);
+  } catch (err) {
+    next(err);
   }
 };

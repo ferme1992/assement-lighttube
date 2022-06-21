@@ -33,6 +33,7 @@ export interface YoutubeListResponse {
 
 export interface YoutubeSearchResponse {
   nextPageToken: string;
+  prevPageToken: string;
   pageInfo: PageInfo;
   items: SearchItem[];
 }
@@ -57,6 +58,22 @@ export const listFavorites = async (token: string) => {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+    return response.data;
+  } catch (err) {
+    console.log((err as AxiosError).response?.data);
+  }
+};
+
+export const paginationYoutube = async (
+  searchQuery: string,
+  page: string,
+  token: string
+) => {
+  try {
+    const response = await api.get<YoutubeSearchResponse>('/pagination', {
+      params: { search_query: searchQuery, page: page },
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (err) {
     console.log((err as AxiosError).response?.data);

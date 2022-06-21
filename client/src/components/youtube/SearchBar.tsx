@@ -6,13 +6,14 @@ import { getSearchTerms, addSearchTerm } from '../../sdk/user';
 import useAuth from '../../context/AuthContext';
 
 export interface Props {
+  inputValue: string;
+  setInputValue: (inputValue: string) => void;
   setSearchValue: (searchResult: YoutubeSearchResponse | undefined) => void;
 }
 
 const SearchBar = (props: Props) => {
   const { token } = useAuth();
   const [searchHistory, setSearchHistory] = useState([' ']);
-  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     getSearchHistory();
@@ -29,7 +30,7 @@ const SearchBar = (props: Props) => {
 
   const addSearchedTerm = async () => {
     if (token) {
-      await addSearchTerm(inputValue, token);
+      await addSearchTerm(props.inputValue, token);
       getSearchHistory();
     }
   };
@@ -47,23 +48,23 @@ const SearchBar = (props: Props) => {
 
   const getSearchedVideos = async () => {
     if (token) {
-      const searchResult = await searchYoutube(inputValue, token);
+      const searchResult = await searchYoutube(props.inputValue, token);
       props.setSearchValue(searchResult);
     }
   };
 
   return (
     <Box sx={{ m: '1rem' }}>
-      <Stack direction='row' spacing={1}>
+      <Stack direction='row' spacing={1} sx={{ justifyContent: 'center' }}>
         <Autocomplete
           freeSolo
           id='search-bar'
           disableClearable
           sx={{ maxWidth: '60rem', width: '40rem' }}
           onKeyDown={handleEnterKeyDown}
-          inputValue={inputValue}
+          inputValue={props.inputValue}
           onInputChange={(event, newInputValue) => {
-            setInputValue(newInputValue);
+            props.setInputValue(newInputValue);
           }}
           options={searchHistory.map((term) => term)}
           renderInput={(params) => (

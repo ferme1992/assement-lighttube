@@ -10,6 +10,7 @@ const Home = () => {
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState<YoutubeSearchResponse>();
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     if (!loggedIn) {
@@ -18,9 +19,13 @@ const Home = () => {
   }, []);
 
   return (
-    <Container sx={{ justifyContent: 'center' }}>
-      <SearchBar setSearchValue={setSearchValue} />
-      <VideosStack searchValue={searchValue} />
+    <Container disableGutters>
+      <SearchBar
+        setSearchValue={setSearchValue}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
+      <VideosStack searchValue={searchValue} inputValue={inputValue} />
     </Container>
   );
 };
