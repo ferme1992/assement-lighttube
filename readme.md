@@ -49,4 +49,5 @@ List of known issues and bugs:
 7. Messages in the client to inform users about errors.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
