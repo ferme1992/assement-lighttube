@@ -8,33 +8,23 @@ import {
   CardContent,
   CardActions,
   Button,
-  TextField,
-  Autocomplete,
   Stack,
-  IconButton,
   Divider,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import {
   listFavorites,
   YoutubeListResponse,
   YoutubeSearchResponse,
-  searchYoutube,
 } from '../../sdk/youtube';
-import {
-  removeFavoriteVideo,
-  addFavoriteVideo,
-  getSearchTerms,
-  addSearchTerm,
-} from '../../sdk/user';
+import { removeFavoriteVideo, addFavoriteVideo } from '../../sdk/user';
 import useAuth from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
 const Home = () => {
   const { token, loggedIn } = useAuth();
   const navigate = useNavigate();
   const [favoriteVideos, setFavoriteVideos] = useState<YoutubeListResponse>();
-  const [searchHistory, setSearchHistory] = useState([' ']);
   const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState<YoutubeSearchResponse>();
   const [listSearch, setListSearch] = useState<JSX.Element | JSX.Element[]>();
@@ -46,35 +36,11 @@ const Home = () => {
     }
   };
 
-  const getSearchHistory = async () => {
-    if (token) {
-      const searchTerms: [] = await getSearchTerms(token);
-      if (searchTerms.length !== 0) {
-        setSearchHistory(searchTerms);
-      }
-    }
-  };
-
-  const getSearchedVideos = async () => {
-    if (token) {
-      const searchResult = await searchYoutube(inputValue, token);
-      setSearchValue(searchResult);
-    }
-  };
-
-  const addSearchedTerm = async () => {
-    if (token) {
-      await addSearchTerm(inputValue, token);
-      getSearchHistory();
-    }
-  };
-
   useEffect(() => {
     if (!loggedIn) {
       navigate('/');
     }
     getFavoriteVideos();
-    getSearchHistory();
   }, []);
 
   useEffect(() => {
@@ -95,12 +61,6 @@ const Home = () => {
     }
   }
 
-  const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
   const isSearchedVideoFavorited = (searchedVideoId: string) => {
     let isFav = false;
     if (favoriteVideos && favoriteVideos.items) {
@@ -112,11 +72,6 @@ const Home = () => {
     }
     return isFav;
   };
-
-  async function handleSearch() {
-    await addSearchedTerm();
-    await getSearchedVideos();
-  }
 
   const searchedVideoList = () => {
     return searchValue?.items ? (
@@ -171,35 +126,12 @@ const Home = () => {
 
   return (
     <Container sx={{ justifyContent: 'center' }}>
-      <Box sx={{ m: '1rem' }}>
-        <Stack direction='row' spacing={1}>
-          <Autocomplete
-            freeSolo
-            id='search-bar'
-            disableClearable
-            sx={{ maxWidth: '60rem', width: '40rem' }}
-            onKeyDown={handleEnterKeyDown}
-            inputValue={inputValue}
-            onInputChange={(event, newInputValue) => {
-              setInputValue(newInputValue);
-            }}
-            options={searchHistory.map((term) => term)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label='Search on Youtube'
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-              />
-            )}
-          />
-          <IconButton aria-label='search-youtube' onClick={handleSearch}>
-            <SearchIcon />
-          </IconButton>
-        </Stack>
-      </Box>
+      <SearchBar
+        token={token}
+        inputValue={inputValue}
+        setSearchValue={setSearchValue}
+        setInputValue={setInputValue}
+      />
       <Stack
         direction='row'
         divider={<Divider orientation='vertical' flexItem />}
