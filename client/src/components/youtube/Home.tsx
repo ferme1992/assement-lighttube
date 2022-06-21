@@ -23,13 +23,14 @@ import {
 } from '../../sdk/youtube';
 import {
   removeFavoriteVideo,
+  addFavoriteVideo,
   getSearchTerms,
   addSearchTerm,
 } from '../../sdk/user';
 import useAuth from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const Favorites = () => {
+const Home = () => {
   const { token, loggedIn } = useAuth();
   const navigate = useNavigate();
   const [favoriteVideos, setFavoriteVideos] = useState<YoutubeListResponse>();
@@ -87,10 +88,29 @@ const Favorites = () => {
     }
   }
 
+  async function handleAddFavorite(e: React.MouseEvent<HTMLElement>) {
+    if (token) {
+      await addFavoriteVideo(e.currentTarget.id, token);
+      getFavoriteVideos();
+    }
+  }
+
   const handleEnterKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const isSearchedVideoFavorited = (searchedVideoId: string) => {
+    let isFav = false;
+    if (favoriteVideos && favoriteVideos.items) {
+      favoriteVideos?.items.forEach((favVideo) => {
+        if (favVideo.id === searchedVideoId) {
+          isFav = true;
+        }
+      });
+    }
+    return isFav;
   };
 
   async function handleSearch() {
@@ -119,13 +139,23 @@ const Favorites = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button
-                size='small'
-                id={searchedVideo.id.videoId}
-                onClick={handleRemoveFavorite}
-              >
-                Remove from Favorites
-              </Button>
+              {isSearchedVideoFavorited(searchedVideo.id.videoId) ? (
+                <Button
+                  size='small'
+                  id={searchedVideo.id.videoId}
+                  onClick={handleRemoveFavorite}
+                >
+                  Remove from Favorites
+                </Button>
+              ) : (
+                <Button
+                  size='small'
+                  id={searchedVideo.id.videoId}
+                  onClick={handleAddFavorite}
+                >
+                  Add to Favorites
+                </Button>
+              )}
             </CardActions>
           </Card>
         </Box>
@@ -230,4 +260,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default Home;
