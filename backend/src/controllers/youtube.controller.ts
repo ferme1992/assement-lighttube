@@ -51,7 +51,7 @@ export const listFavoritedVideos = async (
     const videosIds = user.favoritedVideos;
 
     if (videosIds.length < 1) {
-      return res.status(200).send('The user has not favorited videos yet');
+      return res.send([' ']);
     }
 
     const response = await youtube.videos.list({

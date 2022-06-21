@@ -47,10 +47,6 @@ export const getSearchTerms = async (req: Request, res: Response) => {
 
     const searchTerms = user.searchTerms;
 
-    if (searchTerms.length < 1) {
-      return res.status(200).send('The user has not searched videos yet');
-    }
-
     res.json(searchTerms);
   } catch (err) {
     console.error(err);

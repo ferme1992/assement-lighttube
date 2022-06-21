@@ -33,7 +33,7 @@ const Favorites = () => {
   const { token, loggedIn } = useAuth();
   const navigate = useNavigate();
   const [favoriteVideos, setFavoriteVideos] = useState<YoutubeListResponse>();
-  const [searchHistory, setSearchHistory] = useState([]);
+  const [searchHistory, setSearchHistory] = useState([' ']);
   const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState<YoutubeSearchResponse>();
   const [listSearch, setListSearch] = useState<JSX.Element | JSX.Element[]>();
@@ -47,8 +47,10 @@ const Favorites = () => {
 
   const getSearchHistory = async () => {
     if (token) {
-      const searchTerms = await getSearchTerms(token);
-      setSearchHistory(searchTerms);
+      const searchTerms: [] = await getSearchTerms(token);
+      if (searchTerms.length !== 0) {
+        setSearchHistory(searchTerms);
+      }
     }
   };
 
