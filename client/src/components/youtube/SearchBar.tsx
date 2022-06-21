@@ -3,24 +3,24 @@ import { Box, TextField, Autocomplete, Stack, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { YoutubeSearchResponse, searchYoutube } from '../../sdk/youtube';
 import { getSearchTerms, addSearchTerm } from '../../sdk/user';
+import useAuth from '../../context/AuthContext';
 
 export interface Props {
-  token: string | null | undefined;
-  inputValue: string;
   setSearchValue: (searchResult: YoutubeSearchResponse | undefined) => void;
-  setInputValue: (searchResult: string) => void;
 }
 
 const SearchBar = (props: Props) => {
+  const { token } = useAuth();
   const [searchHistory, setSearchHistory] = useState([' ']);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     getSearchHistory();
   }, []);
 
   const getSearchHistory = async () => {
-    if (props.token) {
-      const searchTerms: [] = await getSearchTerms(props.token);
+    if (token) {
+      const searchTerms: [] = await getSearchTerms(token);
       if (searchTerms.length !== 0) {
         setSearchHistory(searchTerms);
       }
@@ -28,8 +28,8 @@ const SearchBar = (props: Props) => {
   };
 
   const addSearchedTerm = async () => {
-    if (props.token) {
-      await addSearchTerm(props.inputValue, props.token);
+    if (token) {
+      await addSearchTerm(inputValue, token);
       getSearchHistory();
     }
   };
@@ -46,8 +46,8 @@ const SearchBar = (props: Props) => {
   }
 
   const getSearchedVideos = async () => {
-    if (props.token) {
-      const searchResult = await searchYoutube(props.inputValue, props.token);
+    if (token) {
+      const searchResult = await searchYoutube(inputValue, token);
       props.setSearchValue(searchResult);
     }
   };
@@ -61,9 +61,9 @@ const SearchBar = (props: Props) => {
           disableClearable
           sx={{ maxWidth: '60rem', width: '40rem' }}
           onKeyDown={handleEnterKeyDown}
-          inputValue={props.inputValue}
+          inputValue={inputValue}
           onInputChange={(event, newInputValue) => {
-            props.setInputValue(newInputValue);
+            setInputValue(newInputValue);
           }}
           options={searchHistory.map((term) => term)}
           renderInput={(params) => (
