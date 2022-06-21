@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: backend
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
+      - YOUTUBE_KEY=${YOUTUBE_KEY}
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: client
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+  mongo:
+    image: mongo:3.6-xenial
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    
