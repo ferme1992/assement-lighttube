@@ -25,6 +25,10 @@ For the YOUTUBE_KEY variable you will need to:
 You will need to install docker and docker-compose, you can check the documentation at <https://docs.docker.com/get-docker/>.
 
 Once you have the environment variables set up, you need to go with the terminal to the root of the project and execute:
+`docker-compose build`
+
+And then
+
 `docker-compose up`
 
 Once you run the docker command you can check if the containers are up with
