@@ -32,7 +32,7 @@ Once you run the docker command you can check if the containers are up with
 
 If they are all up you are almost there.
 
-The last step is to go to <http://localhost:3000/> and sign up to use the app, once you have an user you can use sign in to login yourself.
+The last step is to go to <http://localhost:3000/> and sign up to use the app, your password should containt at least 7 characters, once you have an user you can use sign in to login yourself.
 
 ## Known bugs and issues
 
