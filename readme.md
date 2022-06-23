@@ -25,6 +25,10 @@ For the YOUTUBE_KEY variable you will need to:
 You will need to install docker and docker-compose, you can check the documentation at <https://docs.docker.com/get-docker/>.
 
 Once you have the environment variables set up, you need to go with the terminal to the root of the project and execute:
+`docker-compose build`
+
+And then
+
 `docker-compose up`
 
 Once you run the docker command you can check if the containers are up with
@@ -32,7 +36,7 @@ Once you run the docker command you can check if the containers are up with
 
 If they are all up you are almost there.
 
-The last step is to go to <http://localhost:3000/> and sign up to use the app, once you have an user you can use sign in to login yourself.
+The last step is to go to <http://localhost:3000/> and sign up to use the app, your password should containt at least 7 characters, once you have an user you can use sign in to login yourself.
 
 ## Known bugs and issues
 
