@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import {
   Container,
   Box,
@@ -10,6 +10,7 @@ import {
   Button,
   Stack,
   Typography,
+  FormHelperText,
 } from '@mui/material';
 import { Visibility, VisibilityOff, AccountCircle } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,16 +24,22 @@ interface State {
 const SignUp = () => {
   const { signUpUser, loggedIn } = useAuth();
   const navigate = useNavigate();
+  const [isFormInvalid, setIsFormInvalid] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    signUpUser(
-      formData.get('name') as string,
-      formData.get('email') as string,
-      formData.get('password') as string
-    );
+    const password = formData.get('password') as string;
+    if (password.length > 6) {
+      signUpUser(
+        formData.get('name') as string,
+        formData.get('email') as string,
+        password
+      );
+    } else {
+      setIsFormInvalid(true);
+    }
   }
 
   useEffect(() => {
@@ -103,6 +110,7 @@ const SignUp = () => {
             value={values.password}
             name='password'
             onChange={handleChange('password')}
+            error={isFormInvalid}
             endAdornment={
               <InputAdornment position='end'>
                 <IconButton
@@ -117,6 +125,11 @@ const SignUp = () => {
             }
             label='Password'
           />
+          {isFormInvalid && (
+            <FormHelperText error id='password-error'>
+              Your password needs to be at least 7 characters long
+            </FormHelperText>
+          )}
         </Box>
         <Button
           type='submit'
